@@ -7,6 +7,17 @@ export function renderLoginForm(container: HTMLElement) {
     <div class="login-container" style="max-width: 420px; margin: 120px auto; padding: 48px 32px; background: rgba(255,255,255,0.15); border-radius: 24px; backdrop-filter: blur(12px); text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
       <h2 style="margin-bottom: 24px; font-size: 2.2rem; color: white;">FutureBox</h2>
       
+      <!-- 🔒 강력한 프라이버시 보장 문구 -->
+      <div style="margin-bottom: 24px; padding: 12px 16px; background: rgba(0,0,0,0.3); border-radius: 12px; border: 1px solid rgba(255,255,255,0.2);">
+        <p style="font-size: 0.95rem; color: #fbbf24; font-weight: 600; margin-bottom: 6px;">
+          🔐 완벽한 비밀 보장
+        </p>
+        <p style="font-size: 0.85rem; color: rgba(255,255,255,0.85); line-height: 1.5;">
+          관리자를 포함한 그 누구도<br/>
+          당신의 메시지를 볼 수 없습니다
+        </p>
+      </div>
+
       <div class="tabs" style="margin-bottom: 32px;">
         <button id="login-tab" class="tab active" style="padding: 12px 24px; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 12px 0 0 12px; cursor: pointer; font-weight: 600;">로그인</button>
         <button id="signup-tab" class="tab" style="padding: 12px 24px; background: rgba(255,255,255,0.1); border: none; color: white; border-radius: 0 12px 12px 0; cursor: pointer; font-weight: 600;">회원가입</button>
@@ -56,10 +67,10 @@ export function renderLoginForm(container: HTMLElement) {
       // 탭 스타일 약간 변경
       if (isLoginMode) {
         (tabs[0] as HTMLElement).style.background = 'rgba(255,255,255,0.2)'
-        ;(tabs[1] as HTMLElement).style.background = 'rgba(255,255,255,0.1)'
+          ; (tabs[1] as HTMLElement).style.background = 'rgba(255,255,255,0.1)'
       } else {
-        ;(tabs[0] as HTMLElement).style.background = 'rgba(255,255,255,0.1)'
-        ;(tabs[1] as HTMLElement).style.background = 'rgba(255,255,255,0.2)'
+        ; (tabs[0] as HTMLElement).style.background = 'rgba(255,255,255,0.1)'
+          ; (tabs[1] as HTMLElement).style.background = 'rgba(255,255,255,0.2)'
       }
     })
   })
