@@ -6,7 +6,7 @@
 
 **미래의 나에게 보내는 디지털 타임캡슐**
 
-[🚀 Live Demo](https://your-project.vercel.app) | [📖 사용 가이드](#-사용-방법)
+[🚀 Live Demo](https://timecapsule-alpha.vercel.app/)
 
 </div>
 
