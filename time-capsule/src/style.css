@@ -523,7 +523,7 @@ main.container {
     font-size: 1rem;
   }
 }
-
+/*  */
 /* 작은 모바일 */
 @media (max-width: 480px) {
   .header {
