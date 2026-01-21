@@ -1,0 +1,432 @@
+/* src/style.css - 최종 업그레이드 완성본 */
+
+/* 기본 리셋 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: url('/bg.png') no-repeat center center fixed;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* 헤더 */
+.header {
+  background: rgba(30, 30, 50, 0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 900;
+  padding: 18px 0;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+}
+
+.header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 30px;
+}
+
+.header h1 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+}
+
+/* 사용자 메뉴 */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.user-email {
+  color: #e0e0ff;
+  font-size: 1.15rem;
+  font-weight: 500;
+}
+
+.logout-btn {
+  background: #ff5252;
+  color: white;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+}
+
+.logout-btn:hover {
+  background: #ff1744;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(255, 82, 82, 0.5);
+}
+
+/* 메인 콘텐츠 여백 */
+main.container {
+  padding-top: 140px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* 섹션 제목 */
+.section-title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 36px;
+  text-align: center;
+  text-shadow: 0 3px 15px rgba(0,0,0,0.6);
+}
+
+/* 구분선 */
+.section-divider {
+  height: 3px;
+  background: linear-gradient(to right, transparent, rgba(100, 181, 246, 0.5), transparent);
+  margin: 80px 0 60px;
+}
+
+/* 캡슐 그리드 */
+.capsule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 40px;
+}
+
+/* 캡슐 카드 기본 */
+.capsule-card {
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(12px);
+  transition: all 0.4s ease;
+  position: relative;
+}
+
+.capsule-card:hover {
+  transform: translateY(-16px) scale(1.03);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+}
+
+/* 공개 캡슐 (어두운 신비로운 톤) */
+.public-section .capsule-card {
+  background: linear-gradient(135deg, rgba(30, 30, 60, 0.92), rgba(50, 50, 100, 0.85));
+  border: 1px solid rgba(100, 100, 200, 0.4);
+}
+
+.public-section .card-title {
+  color: #e0e0ff;
+  font-size: 1.9rem;
+}
+
+.public-section .card-author {
+  font-size: 1rem;
+  opacity: 0.85;
+  margin-bottom: 16px;
+  color: #b0b0ff;
+}
+
+/* 나의 캡슐 (밝고 선명한 톤) */
+.my-section .capsule-card.locked {
+  background: linear-gradient(135deg, rgba(100, 100, 255, 0.25), rgba(150, 100, 255, 0.18));
+  border: 2px solid rgba(100, 100, 255, 0.5);
+}
+
+.my-section .capsule-card.unlocked {
+  background: linear-gradient(135deg, rgba(100, 255, 200, 0.25), rgba(100, 200, 255, 0.18));
+  border: 2px solid rgba(100, 255, 200, 0.5);
+}
+
+.my-section .card-title {
+  color: #ffffff;
+  font-size: 1.9rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* 카드 공통 요소 */
+.card-content {
+  padding: 36px;
+}
+
+.card-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+
+.card-date {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin-bottom: 20px;
+}
+
+.card-message {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  margin-bottom: 28px;
+  min-height: 80px;
+}
+
+/* 버튼들 */
+.open-btn, .delete-btn {
+  padding: 14px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 16px;
+}
+
+.open-btn {
+  background: #4f46e5;
+  color: white;
+}
+
+.open-btn:hover {
+  background: #4338ca;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+}
+
+.delete-btn {
+  background: #ef5350;
+  color: white;
+  margin-left: 12px;
+}
+
+.delete-btn:hover {
+  background: #e53935;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(239, 83, 80, 0.4);
+}
+
+/* 새 캡슐 만들기 버튼 */
+.create-btn {
+  background: linear-gradient(135deg, #6b48ff, #4f46e5);
+  color: white;
+  border: none;
+  padding: 14px 32px;
+  border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+}
+
+.create-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.6);
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 50px 0 80px;
+}
+
+.pagination button {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.pagination button:hover {
+  background: rgba(255,255,255,0.3);
+  transform: translateY(-2px);
+}
+
+.pagination button.active {
+  background: #4f46e5;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+}
+
+/* 기타 */
+.empty-message,
+.error-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.4rem;
+  padding: 80px 0;
+  color: #bbb;
+  opacity: 0.9;
+}
+
+.my-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+  .capsule-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2.1rem;
+  }
+
+  .section-title {
+    font-size: 2rem;
+  }
+
+  .my-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .create-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .capsule-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+/* 개봉 시각 강조 */
+.card-date {
+  font-weight: 600;
+}
+
+.card-date:has(개봉됨) {
+  color: #4caf50 !important;  /* 초록색으로 강조 */
+}
+
+/* 모달 내 개봉 시각 */
+.modal-opened-time {
+  font-weight: 700;
+  color: #4caf50;
+  font-size: 1.05rem;
+  margin-top: 8px;
+}
+
+/* 나의 캡슐 카드 배경 더 선명하게 */
+.my-section .capsule-card.locked {
+  background: linear-gradient(135deg, rgba(100, 100, 255, 0.35), rgba(150, 100, 255, 0.28)) !important;
+  border: 2px solid rgba(100, 100, 255, 0.6);
+}
+
+.my-section .capsule-card.unlocked {
+  background: linear-gradient(135deg, rgba(100, 255, 200, 0.35), rgba(100, 200, 255, 0.28)) !important;
+  border: 2px solid rgba(100, 255, 200, 0.6);
+}
+
+/* 삭제 버튼 업그레이드 */
+.delete-btn {
+  background: #ef5350;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 12px;
+  box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
+}
+
+.delete-btn:hover {
+  background: #d32f2f;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(211, 47, 47, 0.5);
+}
+
+/* 새 캡슐 만들기 버튼 업그레이드 */
+.create-btn {
+  background: linear-gradient(135deg, #7c4dff, #4f46e5);
+  color: white;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 16px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+}
+
+.create-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(124, 77, 255, 0.6);
+}
+
+/* 캡슐 제출 버튼 로딩 상태 */
+#create-form-container button:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.7;
+  transform: none !important;
+}
+
+#create-form-container button:disabled span {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 헤더 로고 클릭 가능하게 */
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logo-link:hover {
+  opacity: 0.85;
+  transform: scale(1.03);
+}
+
+.logo-link h1 {
+  margin: 0;
+  font-size: 2.8rem;
+  font-weight: 900;
+  letter-spacing: -2px;
+  color: #fff;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+}

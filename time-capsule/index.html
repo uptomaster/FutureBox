@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Time Capsule</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <!-- 상단 헤더 (로고 클릭 시 홈으로 이동) -->
+  <header class="header">
+    <div class="container">
+      <a href="/" class="logo-link">
+        <h1>TIME CAPSULE</h1>
+      </a>
+      <div class="user-menu" id="user-menu">
+        <!-- 로그인 상태일 때 이메일 + 로그아웃 버튼이 여기 들어감 -->
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 영역 -->
+  <main class="container">
+    <div id="capsule-list"></div>
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
