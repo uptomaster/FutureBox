@@ -430,3 +430,139 @@ main.container {
   color: #fff;
   text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
 }
+
+/* ========== 모바일 반응형 추가 ========== */
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .capsule-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  }
+  
+  .header .container {
+    padding: 0 24px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  /* 헤더 */
+  .header .container {
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 20px;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+    text-align: center;
+  }
+
+  .logo-link h1 {
+    font-size: 1.8rem;
+  }
+
+  .user-menu {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+
+  .user-email {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .logout-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* 메인 콘텐츠 */
+  main.container {
+    padding-top: 180px !important;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .my-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .create-btn {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .capsule-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* 카드 */
+  .card-content {
+    padding: 28px;
+  }
+
+  .card-title {
+    font-size: 1.6rem;
+  }
+
+  .card-message {
+    font-size: 1.1rem;
+  }
+
+  /* 버튼 */
+  .open-btn, .delete-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  .header {
+    padding: 14px 0;
+  }
+
+  .header h1,
+  .logo-link h1 {
+    font-size: 1.5rem;
+  }
+
+  .user-email {
+    font-size: 0.85rem;
+  }
+
+  .logout-btn {
+    font-size: 0.95rem;
+    padding: 10px 20px;
+  }
+
+  main.container {
+    padding-top: 200px !important;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .card-content {
+    padding: 24px;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+  }
+
+  .card-message {
+    font-size: 1rem;
+  }
+}
