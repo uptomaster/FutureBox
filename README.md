@@ -1,5 +1,5 @@
 # 📦 FutureBox
-
+<img src="time-capsule/public/bg.png" alt="background" width="800" />
 <div align="center">
 <img src="time-capsule/public/og-image.png" alt="FutureBox Banner" width="400" />
 
