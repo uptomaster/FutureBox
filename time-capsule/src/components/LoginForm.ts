@@ -1,11 +1,11 @@
 // src/components/LoginForm.ts
 import { signUp, signIn } from '../lib/auth.ts'
-import { loadCapsules } from '../main.ts'  // ← 여기 import 추가! (에러 해결)
+import { loadCapsules } from '../main.ts'  // 여기에다 import 추가함 (에러 해결)
 
 export function renderLoginForm(container: HTMLElement) {
   container.innerHTML = `
     <div class="login-container" style="max-width: 420px; margin: 120px auto; padding: 48px 32px; background: rgba(255,255,255,0.15); border-radius: 24px; backdrop-filter: blur(12px); text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      <h2 style="margin-bottom: 24px; font-size: 2.2rem; color: white;">Time Capsule</h2>
+      <h2 style="margin-bottom: 24px; font-size: 2.2rem; color: white;">FutureBox</h2>
       
       <div class="tabs" style="margin-bottom: 32px;">
         <button id="login-tab" class="tab active" style="padding: 12px 24px; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 12px 0 0 12px; cursor: pointer; font-weight: 600;">로그인</button>
