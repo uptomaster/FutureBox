@@ -1,8 +1,7 @@
 # 📦 FutureBox
 
 <div align="center">
-
-![FutureBox Banner](time-capsule/public/og-image.png)
+<img src="time-capsule/public/og-image.png" alt="FutureBox Banner" width="400" />
 
 **미래의 나에게 보내는 디지털 타임캡슐**
 
