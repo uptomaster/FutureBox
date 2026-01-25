@@ -101,10 +101,10 @@ export function renderLoginForm(container: HTMLElement) {
 
       if (isLoginMode) {
         (tabs[0] as HTMLElement).style.background = 'rgba(167,139,250,0.35)'
-        ;(tabs[1] as HTMLElement).style.background = 'transparent'
+          ; (tabs[1] as HTMLElement).style.background = 'transparent'
       } else {
-        ;(tabs[0] as HTMLElement).style.background = 'transparent'
-        ;(tabs[1] as HTMLElement).style.background = 'rgba(167,139,250,0.35)'
+        ; (tabs[0] as HTMLElement).style.background = 'transparent'
+          ; (tabs[1] as HTMLElement).style.background = 'rgba(167,139,250,0.35)'
       }
     })
   })
@@ -137,16 +137,16 @@ export function renderLoginForm(container: HTMLElement) {
       submitBtn.disabled = true
       submitBtn.innerHTML = '처리 중... <span style="margin-left:10px; animation: spin 1s linear infinite;">⏳</span>'
 
-      let user
       if (isLoginMode) {
-        user = await signIn(email, password)
+        await signIn(email, password)
         message.style.color = '#34d399'
         message.textContent = '로그인 성공! 잠시만 기다려주세요...'
       } else {
-        user = await signUp(email, password)
+        await signUp(email, password)
         message.style.color = '#34d399'
         message.textContent = '회원가입 성공! 자동 로그인되었습니다.'
       }
+
 
       setTimeout(() => {
         loadCapsules()
