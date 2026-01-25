@@ -1,4 +1,4 @@
-/* src/style.css - 최종 업그레이드 완성본 */
+/* src/style.css - FutureBox 테마 최종 완성본 (공개 캡슐도 열린 상자 이미지 적용 + 3D 네온 + 테두리 제거) */
 
 /* 기본 리셋 */
 * {
@@ -17,11 +17,10 @@ body {
   line-height: 1.6;
 }
 
-/* 헤더 */
+/* 헤더 - 밑줄 완전 제거 */
 .header {
   background: rgba(30, 30, 50, 0.92);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   position: fixed;
   top: 0;
   left: 0;
@@ -90,6 +89,33 @@ main.container {
   padding-right: 30px;
 }
 
+/* 인트로 섹션 - 가운데 정렬 & 세련되게 */
+.intro {
+  text-align: center;
+  margin: 0 auto 48px auto;
+  max-width: 800px;
+  padding: 32px 40px;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.intro h2 {
+  font-size: 2.4rem;
+  font-weight: 900;
+  background: linear-gradient(90deg, #a78bfa, #7c3aed, #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.intro p {
+  font-size: 1.15rem;
+  opacity: 0.95;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
 /* 섹션 제목 */
 .section-title {
   font-size: 2.4rem;
@@ -114,30 +140,77 @@ main.container {
   gap: 40px;
 }
 
-/* 캡슐 카드 기본 */
+/* 캡슐 카드 기본 - 3D 네온 효과 + 테두리 제거 */
 .capsule-card {
   border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: 
+    0 12px 48px rgba(0, 0, 0, 0.35), 
+    inset 0 -6px 24px rgba(255, 255, 255, 0.08),
+    0 0 30px rgba(79, 70, 229, 0.25); /* 네온 glow */
   backdrop-filter: blur(12px);
   transition: all 0.4s ease;
   position: relative;
+  border: none; /* 테두리 완전 제거 */
 }
 
 .capsule-card:hover {
   transform: translateY(-16px) scale(1.03);
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.5),
+    inset 0 -8px 32px rgba(255, 255, 255, 0.12),
+    0 0 50px rgba(79, 70, 229, 0.45); /* 호버 시 네온 더 강하게 */
 }
 
-/* 공개 캡슐 (어두운 신비로운 톤) */
+/* 상자 배경 공통 오버레이 */
+.capsule-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20, 20, 45, 0.65);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 카드 내용 */
+.card-content {
+  position: relative;
+  z-index: 2;
+  padding: 36px;
+}
+
+/* 공개 캡슐 - 열린/닫힌 상자 이미지 구분 */
 .public-section .capsule-card {
-  background: linear-gradient(135deg, rgba(30, 30, 60, 0.92), rgba(50, 50, 100, 0.85));
-  border: 1px solid rgba(100, 100, 200, 0.4);
+  background: url('/treasure-chest-pixel.png') no-repeat center center / cover !important;
+}
+
+.public-section .capsule-card.unlocked {
+  background: url('/openbox.jpg') no-repeat center center / cover !important;
+}
+
+/* 나의 캡슐 - 잠긴/열린 상자 */
+.my-section .capsule-card.locked {
+  background: url('/treasure-chest-pixel.png') no-repeat center center / cover !important;
+}
+
+.my-section .capsule-card.unlocked {
+  background: url('/openbox.jpg') no-repeat center center / cover !important;
+}
+
+/* 카드 타이틀 공통 */
+.card-title {
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-bottom: 14px;
+  color: #ffffff;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
 
 .public-section .card-title {
   color: #e0e0ff;
-  font-size: 1.9rem;
 }
 
 .public-section .card-author {
@@ -147,34 +220,7 @@ main.container {
   color: #b0b0ff;
 }
 
-/* 나의 캡슐 (밝고 선명한 톤) */
-.my-section .capsule-card.locked {
-  background: linear-gradient(135deg, rgba(100, 100, 255, 0.25), rgba(150, 100, 255, 0.18));
-  border: 2px solid rgba(100, 100, 255, 0.5);
-}
-
-.my-section .capsule-card.unlocked {
-  background: linear-gradient(135deg, rgba(100, 255, 200, 0.25), rgba(100, 200, 255, 0.18));
-  border: 2px solid rgba(100, 255, 200, 0.5);
-}
-
-.my-section .card-title {
-  color: #ffffff;
-  font-size: 1.9rem;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.4);
-}
-
 /* 카드 공통 요소 */
-.card-content {
-  padding: 36px;
-}
-
-.card-title {
-  font-size: 1.9rem;
-  font-weight: 800;
-  margin-bottom: 14px;
-}
-
 .card-date {
   font-size: 1.05rem;
   opacity: 0.85;
@@ -330,7 +376,7 @@ main.container {
 }
 
 .card-date:has(개봉됨) {
-  color: #4caf50 !important;  /* 초록색으로 강조 */
+  color: #4caf50 !important;
 }
 
 /* 모달 내 개봉 시각 */
@@ -339,232 +385,6 @@ main.container {
   color: #4caf50;
   font-size: 1.05rem;
   margin-top: 8px;
-}
-
-/* 나의 캡슐 카드 배경 더 선명하게 */
-.my-section .capsule-card.locked {
-  background: linear-gradient(135deg, rgba(100, 100, 255, 0.35), rgba(150, 100, 255, 0.28)) !important;
-  border: 2px solid rgba(100, 100, 255, 0.6);
-}
-
-.my-section .capsule-card.unlocked {
-  background: linear-gradient(135deg, rgba(100, 255, 200, 0.35), rgba(100, 200, 255, 0.28)) !important;
-  border: 2px solid rgba(100, 255, 200, 0.6);
-}
-
-/* 삭제 버튼 업그레이드 */
-.delete-btn {
-  background: #ef5350;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-left: 12px;
-  box-shadow: 0 4px 12px rgba(239, 83, 80, 0.3);
-}
-
-.delete-btn:hover {
-  background: #d32f2f;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 24px rgba(211, 47, 47, 0.5);
-}
-
-/* 새 캡슐 만들기 버튼 업그레이드 */
-.create-btn {
-  background: linear-gradient(135deg, #7c4dff, #4f46e5);
-  color: white;
-  border: none;
-  padding: 14px 36px;
-  border-radius: 16px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
-}
-
-.create-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(124, 77, 255, 0.6);
-}
-
-/* 캡슐 제출 버튼 로딩 상태 */
-#create-form-container button:disabled {
-  background: #666;
-  cursor: not-allowed;
-  opacity: 0.7;
-  transform: none !important;
-}
-
-#create-form-container button:disabled span {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* 헤더 로고 클릭 가능하게 */
-.logo-link {
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.logo-link:hover {
-  opacity: 0.85;
-  transform: scale(1.03);
-}
-
-.logo-link h1 {
-  margin: 0;
-  font-size: 2.8rem;
-  font-weight: 900;
-  letter-spacing: -2px;
-  color: #fff;
-  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
-}
-
-/* ========== 모바일 반응형 추가 ========== */
-
-/* 태블릿 */
-@media (max-width: 1024px) {
-  .capsule-grid {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  }
-  
-  .header .container {
-    padding: 0 24px;
-  }
-}
-
-/* 모바일 */
-@media (max-width: 768px) {
-  /* 헤더 */
-  .header .container {
-    flex-direction: column;
-    gap: 16px;
-    padding: 0 20px;
-  }
-
-  .header h1 {
-    font-size: 1.8rem;
-    text-align: center;
-  }
-
-  .logo-link h1 {
-    font-size: 1.8rem;
-  }
-
-  .user-menu {
-    flex-direction: column;
-    width: 100%;
-    gap: 12px;
-  }
-
-  .user-email {
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-  .logout-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  /* 메인 콘텐츠 */
-  main.container {
-    padding-top: 180px !important;
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .section-title {
-    font-size: 1.8rem;
-  }
-
-  .my-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .create-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .capsule-grid {
-    grid-template-columns: 1fr;
-    gap: 32px;
-  }
-
-  /* 카드 */
-  .card-content {
-    padding: 28px;
-  }
-
-  .card-title {
-    font-size: 1.6rem;
-  }
-
-  .card-message {
-    font-size: 1.1rem;
-  }
-
-  /* 버튼 */
-  .open-btn, .delete-btn {
-    padding: 12px 24px;
-    font-size: 1rem;
-  }
-}
-/*  */
-/* 작은 모바일 */
-@media (max-width: 480px) {
-  .header {
-    padding: 14px 0;
-  }
-
-  .header h1,
-  .logo-link h1 {
-    font-size: 1.5rem;
-  }
-
-  .user-email {
-    font-size: 0.85rem;
-  }
-
-  .logout-btn {
-    font-size: 0.95rem;
-    padding: 10px 20px;
-  }
-
-  main.container {
-    padding-top: 200px !important;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-  }
-
-  .card-content {
-    padding: 24px;
-  }
-
-  .card-title {
-    font-size: 1.4rem;
-  }
-
-  .card-message {
-    font-size: 1rem;
-  }
 }
 
 /* 애니메이션 */
@@ -693,24 +513,17 @@ main.container {
   transform: translateY(-2px);
 }
 
-/* 카드 호버 효과 */
+/* 카드 호버 효과 - 네온 강화 */
 .hover-scale {
   transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .hover-scale:hover {
   transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(79,70,229,0.5);
 }
 
-/* 섹션 페이드인 */
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
+section.my-section {
+  padding-bottom: 30px;
+  margin-bottom: 50px;
 }

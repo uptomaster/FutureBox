@@ -1,4 +1,4 @@
-// src/main.ts - 최종 완성본
+// src/main.ts - FutureBox 최종 완성본 (문구 색상 구분 + 공개 캡슐 열린/닫힌 이미지 적용)
 
 import { supabase } from './lib/supabase.ts'
 import { renderLoginForm } from './components/LoginForm.ts'
@@ -7,7 +7,8 @@ import { getCurrentUser, signOut } from './lib/auth.ts'
 import { decrypt } from './lib/crypto.ts'
 
 const capsuleList = document.getElementById('capsule-list') as HTMLDivElement | null
-const ITEMS_PER_PAGE = 9
+const introSection = document.getElementById('intro-section') as HTMLElement | null
+const ITEMS_PER_PAGE = 6
 
 function maskEmail(email: string): string {
   if (!email) return '익명'
@@ -16,7 +17,7 @@ function maskEmail(email: string): string {
   return `${local.slice(0, 2)}${'*'.repeat(local.length - 2)}@${domain}`
 }
 
-// 공개 캡슐 불러오기 (내 캡슐 제외)
+// 공개 상자 불러오기
 async function loadPublicCapsules(page = 1) {
   const currentUser = getCurrentUser()
 
@@ -40,7 +41,7 @@ async function loadPublicCapsules(page = 1) {
   const { data, error, count } = await query
 
   if (error) {
-    console.error('공개 캡슐 오류:', error)
+    console.error('공개 상자 오류:', error)
     return { capsules: [], total: 0 }
   }
 
@@ -53,9 +54,22 @@ async function loadPublicCapsules(page = 1) {
 }
 
 export async function loadCapsules(publicPage = 1) {
-  if (!capsuleList) return
+  if (!capsuleList || !introSection) return
 
   const currentUser = getCurrentUser()
+
+  // 인트로 섹션 렌더링
+  if (!currentUser) {
+    introSection.innerHTML = `
+      <h2>미래의 나에게 메시지를 보내세요</h2>
+      <p>FutureBox는 당신의 추억을 안전하게 봉인합니다. 지정한 날짜에만 열 수 있어요!</p>
+    `
+  } else {
+    introSection.innerHTML = `
+  <h2>환영합니다, ${currentUser.email?.split('@')[0] ?? '사용자'}님!</h2>
+  <p>새로운 상자를 만들거나, 기존 상자를 확인해보세요.</p>
+`
+  }
 
   // 헤더 사용자 메뉴 업데이트
   const userMenu = document.getElementById('user-menu')
@@ -83,14 +97,14 @@ export async function loadCapsules(publicPage = 1) {
 
   let html = `
     <section class="public-section fade-in">
-      <h2 class="section-title">다른 사람들의 캡슐들</h2>
+      <h2 class="section-title">다른 사람들의 상자들</h2>
       <div class="capsule-grid">
   `
 
   const { capsules: publicCapsules, total: totalPublic } = await loadPublicCapsules(publicPage)
 
   if (publicCapsules.length === 0) {
-    html += '<p class="empty-message">아직 공개된 캡슐이 없어요...</p>'
+    html += '<p class="empty-message">아직 공개된 상자가 없어요...</p>'
   } else {
     html += publicCapsules.map(capsule => {
       const maskedEmail = maskEmail(capsule.email)
@@ -98,16 +112,30 @@ export async function loadCapsules(publicPage = 1) {
       const isOpenable = !capsule.is_opened && openAtDate <= new Date()
       const statusClass = capsule.is_opened ? 'unlocked' : 'locked'
 
+      let messageText = ''
+      let messageColor = ''
+
+      if (capsule.is_opened) {
+        messageText = '이미 열렸어요!'
+        messageColor = '#34d399'  // 초록 - 완료
+      } else if (isOpenable) {
+        messageText = '지금 열 수 있어요!'
+        messageColor = '#fbbf24'  // 노랑 - 주목
+      } else {
+        messageText = '아직 열 수 없습니다...'
+        messageColor = '#9ca3af'  // 회색 - 대기
+      }
+
       return `
         <div class="capsule-card ${statusClass} hover-scale">
           <div class="card-content">
-            <h2 class="card-title">비밀 캡슐</h2>
+            <h2 class="card-title">비밀 상자</h2>
             <p class="card-author">by ${maskedEmail}</p>
             <p class="card-date">
               ${capsule.is_opened ? '개봉됨' : '열림 예정: ' + openAtDate.toLocaleDateString('ko-KR')}
             </p>
-            <p class="card-message">
-              ${capsule.is_opened ? '이미 열렸어요!' : isOpenable ? '지금 열 수 있어요!' : '아직 열 수 없습니다...'}
+            <p class="card-message" style="white-space: pre-line; color: ${messageColor};">
+              ${messageText}
             </p>
           </div>
         </div>
@@ -129,12 +157,12 @@ export async function loadCapsules(publicPage = 1) {
 
   html += '<div class="section-divider"></div>'
 
-  // 나의 캡슐 섹션
+  // 나의 상자 섹션
   html += `
     <section class="my-section fade-in">
       <div class="my-header">
-        <h2 class="section-title">나의 캡슐</h2>
-        <button id="create-new-btn" class="create-btn">새 캡슐 만들기</button>
+        <h2 class="section-title">나의 상자</h2>
+        <button id="create-new-btn" class="create-btn">새 상자 만들기</button>
       </div>
       <div class="capsule-grid">
   `
@@ -146,9 +174,9 @@ export async function loadCapsules(publicPage = 1) {
     .order('created_at', { ascending: false })
 
   if (myError) {
-    html += '<p class="error-message">나의 캡슐을 불러오는 중 오류가 발생했습니다.</p>'
+    html += '<p class="error-message">나의 상자를 불러오는 중 오류가 발생했습니다.</p>'
   } else if (myCapsules.length === 0) {
-    html += '<p class="empty-message">아직 만든 캡슐이 없어요. 새 캡슐을 만들어 보세요!</p>'
+    html += '<p class="empty-message">아직 만든 상자가 없어요. 새 상자를 만들어 보세요!</p>'
   } else {
     html += myCapsules.map(capsule => {
       const openAtDate = new Date(capsule.open_at)
@@ -158,33 +186,45 @@ export async function loadCapsules(publicPage = 1) {
 
       let dateText = capsule.is_opened
         ? `개봉됨: ${new Date(capsule.opened_at).toLocaleString('ko-KR', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-          })}`
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        })}`
         : `열림 예정: ${openAtDate.toLocaleDateString('ko-KR')}`
 
-      let messageText = capsule.is_opened
-        ? '이 캡슐은 이미 열렸습니다!'
-        : isOpenable
-          ? '지금 열 수 있어요!'
-          : '아직 열 수 없습니다...\n조금만 더 기다려주세요.'
+      let messageText = ''
+      let messageColor = ''
 
-      const deleteBtn = !capsule.is_opened
-        ? `<button class="delete-btn" data-id="${capsule.id}">삭제</button>`
+      if (capsule.is_opened) {
+        messageText = '이 상자는 이미 열렸습니다!'
+        messageColor = '#34d399'  // 초록 - 완료
+      } else if (isOpenable) {
+        messageText = '지금 열 수 있어요!'
+        messageColor = '#fbbf24'  // 노랑 - 주목
+      } else {
+        messageText = '아직 열 수 없습니다...\n조금만 더 기다려주세요.'
+        messageColor = '#9ca3af'  // 회색 - 대기
+      }
+
+      // 열기 버튼: 개봉 가능하거나 이미 개봉된 경우에만 표시
+      const openBtn = (capsule.is_opened || isOpenable)
+        ? `<button class="open-btn" data-id="${capsule.id}">열기</button>`
         : ''
+
+      // 삭제 버튼: 항상 표시 (열린 상자도 삭제 가능)
+      const deleteBtn = `<button class="delete-btn" data-id="${capsule.id}">삭제</button>`
 
       return `
         <div class="capsule-card ${statusClass} hover-scale" data-id="${capsule.id}">
           <div class="card-content">
             <h2 class="card-title">${capsule.title || '(제목 없음)'}</h2>
             <p class="card-date">${dateText}</p>
-            <p class="card-message" style="white-space: pre-line;">${messageText}</p>
-            ${isOpenable && !capsule.is_opened
-              ? `<button class="open-btn" data-id="${capsule.id}">열기</button>`
-              : ''}
+            <p class="card-message" style="white-space: pre-line; color: ${messageColor};">
+              ${messageText}
+            </p>
+            ${openBtn}
             ${deleteBtn}
           </div>
         </div>
@@ -196,7 +236,7 @@ export async function loadCapsules(publicPage = 1) {
 
   capsuleList.innerHTML = html
 
-  // 애니메이션 지연 적용 (fade-in)
+  // 애니메이션 적용
   setTimeout(() => {
     const sections = document.querySelectorAll('.fade-in')
     sections.forEach(s => s.classList.add('visible'))
@@ -216,7 +256,7 @@ export async function loadCapsules(publicPage = 1) {
     })
   })
 
-  // 열기 버튼 이벤트
+  // 열기 버튼 이벤트 - 열린 상자도 재개봉 가능
   document.querySelectorAll('.open-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const target = e.currentTarget as HTMLButtonElement
@@ -239,26 +279,7 @@ export async function loadCapsules(publicPage = 1) {
           .single()
 
         if (fetchError || !capsule) {
-          alert('캡슐을 불러올 수 없습니다.')
-          return
-        }
-
-        if (capsule.is_opened) {
-          alert('이미 열린 캡슐입니다.')
-          return
-        }
-
-        const { error: updateError } = await supabase
-          .from('capsules')
-          .update({
-            is_opened: true,
-            opened_at: new Date().toISOString()
-          })
-          .eq('id', id)
-          .eq('user_id', currentUser.id)
-
-        if (updateError) {
-          alert('개봉 중 오류가 발생했습니다.')
+          alert('상자를 불러올 수 없습니다.')
           return
         }
 
@@ -270,36 +291,33 @@ export async function loadCapsules(publicPage = 1) {
           <div class="modal-content">
             <button id="close-modal" class="close-btn">×</button>
             <h2>${capsule.title || '(제목 없음)'}</h2>
-            <div class="modal-message">${decryptedContent}</div>
+            <div class="modal-message" style="white-space: pre-line;">${decryptedContent}</div>
             <p class="modal-time">
               봉인일: ${new Date(capsule.created_at).toLocaleDateString('ko-KR')} • 
-              개봉 시각: ${new Date(capsule.opened_at).toLocaleString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-              })}
+              개봉 시각: ${capsule.is_opened
+            ? new Date(capsule.opened_at).toLocaleString('ko-KR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+            : '아직 개봉되지 않음'}
             </p>
           </div>
         `
 
         document.body.appendChild(modal)
 
-        modal.querySelector('#close-modal')?.addEventListener('click', () => {
+        const closeModal = () => {
           modal.classList.remove('fade-in')
           modal.classList.add('fade-out')
           setTimeout(() => modal.remove(), 400)
-          loadCapsules(publicPage)
-        })
+        }
 
+        modal.querySelector('#close-modal')?.addEventListener('click', closeModal)
         modal.addEventListener('click', (ev) => {
-          if (ev.target === modal) {
-            modal.classList.remove('fade-in')
-            modal.classList.add('fade-out')
-            setTimeout(() => modal.remove(), 400)
-            loadCapsules(publicPage)
-          }
+          if (ev.target === modal) closeModal()
         })
       } catch (err) {
         console.error(err)
@@ -308,7 +326,7 @@ export async function loadCapsules(publicPage = 1) {
     })
   })
 
-  // 삭제 버튼 이벤트
+  // 삭제 버튼 이벤트 - 항상 삭제 가능
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const target = e.currentTarget as HTMLButtonElement
@@ -321,8 +339,8 @@ export async function loadCapsules(publicPage = 1) {
       confirmModal.innerHTML = `
         <div class="modal-content confirm-modal">
           <h2 style="color: #ef4444;">정말 삭제하시겠어요?</h2>
-          <p style="color: #4b5563; margin: 20px 0;">삭제된 캡슐은 복구할 수 없습니다.</p>
-          <div style="display: flex; gap: 20px; justify-content: center;">
+          <p style="color: #d1d5db; margin: 24px 0;">삭제된 상자는 복구할 수 없습니다.</p>
+          <div style="display: flex; gap: 24px; justify-content: center;">
             <button id="cancel-delete" class="btn-secondary">취소</button>
             <button id="confirm-delete" class="btn-danger">삭제</button>
           </div>
@@ -343,13 +361,12 @@ export async function loadCapsules(publicPage = 1) {
             .delete()
             .eq('id', id)
             .eq('user_id', currentUser.id)
-            .eq('is_opened', false)
 
           if (error) throw error
 
           confirmModal.classList.add('fade-out')
           setTimeout(() => confirmModal.remove(), 400)
-          alert('캡슐이 삭제되었습니다.')
+          alert('상자가 삭제되었습니다.')
           loadCapsules(publicPage)
         } catch (err) {
           console.error(err)

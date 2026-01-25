@@ -1,28 +1,30 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="dark">
 
 <head>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-SE3YEYRBQD"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-
     gtag('config', 'G-SE3YEYRBQD');
   </script>
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
   <!-- 파비콘 -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
   <!-- 기본 메타 태그 -->
   <meta name="description" content="미래의 나에게 보내는 메시지, FutureBox에 추억을 담아보세요. 관리자를 포함한 그 누구도 당신의 메시지를 볼 수 없습니다." />
   <meta name="keywords" content="FutureBox, 타임캡슐, 미래 메시지, 추억 저장, 암호화" />
   <meta name="author" content="이남혁" />
 
-  <!-- Open Graph (카카오톡, 페이스북) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="FutureBox - 미래의 나에게" />
   <meta property="og:description" content="미래의 나에게 보내는 메시지, FutureBox에 추억을 담아보세요." />
@@ -43,24 +45,22 @@
 </head>
 
 <body>
-  <!-- 상단 헤더 (로고 클릭 시 홈으로 이동) -->
+  <!-- 상단 헤더 -->
   <header class="header">
     <div class="container">
       <a href="/" class="logo-link">
         <h1>FutureBox</h1>
       </a>
-      <div class="user-menu" id="user-menu">
-        <!-- 로그인 상태일 때 이메일 + 로그아웃 버튼이 여기 들어감 -->
-      </div>
+      <div class="user-menu" id="user-menu"></div>
     </div>
   </header>
 
-  <!-- 메인 콘텐츠 영역 -->
+  <!-- 메인 콘텐츠 -->
   <main class="container">
+    <section id="intro-section" class="intro fade-in"></section> <!-- 새 인트로 섹션 -->
     <div id="capsule-list"></div>
   </main>
 
   <script type="module" src="/src/main.ts"></script>
 </body>
-
 </html>

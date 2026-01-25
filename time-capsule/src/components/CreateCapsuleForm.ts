@@ -1,54 +1,101 @@
-// src/components/CreateCapsuleForm.ts - 최종 버전
+// src/components/CreateCapsuleForm.ts - 뒤로 가기 버튼 추가 + 사용자 친화적으로 완성
 
 import { supabase } from '../lib/supabase.ts'
 import { loadCapsules } from '../main.ts'
 import { getCurrentUser } from '../lib/auth.ts'
-import { encrypt } from '../lib/crypto.ts'  // 암호화 추가
+import { encrypt } from '../lib/crypto.ts'
 
 export async function renderCreateCapsuleForm(container: HTMLElement) {
+  // 오늘 날짜 + 1일 기본값 설정
+  const tomorrow = new Date()
+  tomorrow.setDate(tomorrow.getDate() + 1)
+  const defaultOpenAt = tomorrow.toISOString().slice(0, 16)
+
   container.innerHTML = `
-    <div class="create-form-container" style="max-width: 600px; margin: 80px auto; padding: 40px; background: rgba(255,255,255,0.2); border-radius: 24px; backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      <h2 style="text-align:center; color:white; margin-bottom:32px; font-size:2.2rem;">새로운 캡슐 봉인하기</h2>
-      
-      <form id="capsule-form">
-        <div style="margin-bottom:24px;">
-          <label for="title" style="display:block; color:white; margin-bottom:8px; font-weight:600;">제목</label>
-          <input id="title" type="text" placeholder="캡슐 제목을 입력하세요" required style="width:100%; padding:14px; border-radius:12px; border:none; font-size:1.1rem;" />
+    <div class="create-form-container" style="max-width: 720px; margin: 80px auto; padding: 56px 48px; 
+      background: linear-gradient(145deg, rgba(30,25,60,0.94), rgba(55,40,120,0.88), rgba(80,60,180,0.82));
+      border-radius: 32px; backdrop-filter: blur(24px); box-shadow: 0 24px 80px rgba(0,0,0,0.6); 
+      border: 1px solid rgba(140,120,255,0.35); position: relative;">
+
+      <!-- 뒤로 가기 버튼 -->
+      <button id="back-btn" style="position: absolute; top: 32px; left: 32px; 
+        background: rgba(255,255,255,0.12); border: none; border-radius: 12px; 
+        padding: 12px 20px; color: #e0d7ff; font-size: 1.05rem; font-weight: 600; 
+        cursor: pointer; display: flex; align-items: center; gap: 8px; 
+        transition: all 0.3s; backdrop-filter: blur(8px);">
+        <span style="font-size: 1.4rem;">←</span> 뒤로 가기
+      </button>
+
+      <h2 style="text-align:center; margin-bottom:48px; font-size:2.8rem; font-weight:900; 
+        background: linear-gradient(90deg, #c084fc, #a78bfa, #60a5fa); 
+        -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:-1px;">
+        새 상자 봉인하기
+      </h2>
+
+      <form id="capsule-form" style="display:flex; flex-direction:column; gap:32px;">
+        <!-- 제목 -->
+        <div>
+          <label for="title" style="display:block; color:#e0d7ff; margin-bottom:10px; 
+            font-weight:700; font-size:1.15rem; letter-spacing:-0.3px;">제목</label>
+          <input id="title" type="text" placeholder="상자 제목을 입력하세요" required 
+            style="width:100%; padding:18px 24px; border-radius:16px; border:none; font-size:1.18rem; 
+            background:rgba(255,255,255,0.98); box-shadow:inset 0 2px 10px rgba(0,0,0,0.12); 
+            transition:all 0.3s; letter-spacing:-0.2px;" />
         </div>
 
-        <div style="margin-bottom:24px;">
-          <label for="content" style="display:block; color:white; margin-bottom:8px; font-weight:600;">내용 (봉인될 메시지)</label>
-          <textarea id="content" rows="6" placeholder="미래의 나에게, 혹은 소중한 사람에게 전하고 싶은 말..." required style="width:100%; padding:14px; border-radius:12px; border:none; font-size:1.1rem; resize:vertical;"></textarea>
+        <!-- 내용 -->
+        <div>
+          <label for="content" style="display:block; color:#e0d7ff; margin-bottom:10px; 
+            font-weight:700; font-size:1.15rem; letter-spacing:-0.3px;">내용</label>
+          <textarea id="content" rows="8" placeholder="미래의 나에게, 혹은 소중한 사람에게 전하고 싶은 말..." required 
+            style="width:100%; padding:18px 24px; border-radius:16px; border:none; font-size:1.18rem; 
+            background:rgba(255,255,255,0.98); box-shadow:inset 0 2px 10px rgba(0,0,0,0.12); 
+            transition:all 0.3s; resize:vertical; letter-spacing:-0.15px; line-height:1.6;"></textarea>
         </div>
 
-        <div style="margin-bottom:32px;">
-          <label for="open_at" style="display:block; color:white; margin-bottom:8px; font-weight:600;">이 캡슐을 열 날짜</label>
-          <input id="open_at" type="datetime-local" required min="${new Date().toISOString().slice(0,16)}" style="width:100%; padding:14px; border-radius:12px; border:none; font-size:1.1rem;" />
+        <!-- 개봉 날짜 -->
+        <div>
+          <label for="open_at" style="display:block; color:#e0d7ff; margin-bottom:10px; 
+            font-weight:700; font-size:1.15rem; letter-spacing:-0.3px;">개봉 날짜</label>
+          <input id="open_at" type="datetime-local" required min="${defaultOpenAt}" value="${defaultOpenAt}" 
+            style="width:100%; padding:18px 24px; border-radius:16px; border:none; font-size:1.18rem; 
+            background:rgba(255,255,255,0.98); box-shadow:inset 0 2px 10px rgba(0,0,0,0.12); 
+            transition:all 0.3s; letter-spacing:-0.2px;" />
         </div>
 
-        <button type="submit" id="submit-btn" style="width:100%; padding:16px; background:#4f46e5; color:white; border:none; border-radius:12px; font-size:1.2rem; font-weight:600; cursor:pointer; transition:all 0.2s;">
-          캡슐 봉인하기
+        <!-- 제출 버튼 -->
+        <button type="submit" id="submit-btn" 
+          style="width:100%; padding:20px; background: linear-gradient(135deg, #a78bfa, #7c3aed, #60a5fa, #34d399); 
+          color:white; border:none; border-radius:20px; font-size:1.35rem; font-weight:800; 
+          cursor:pointer; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); 
+          box-shadow:0 12px 36px rgba(124,77,255,0.55); letter-spacing:-0.4px;">
+          상자 봉인하기
         </button>
       </form>
 
-      <p id="form-message" style="text-align:center; margin-top:20px; color:#ff6b6b; font-weight:600;"></p>
+      <p id="form-message" style="text-align:center; margin-top:32px; font-size:1.15rem; font-weight:600; min-height:32px;"></p>
     </div>
   `
+
+  // 뒤로 가기 버튼 이벤트
+  document.getElementById('back-btn')?.addEventListener('click', () => {
+    loadCapsules() // 메인 화면으로 돌아가기
+  })
 
   const form = document.getElementById('capsule-form') as HTMLFormElement
   const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement
   const messageEl = document.getElementById('form-message') as HTMLParagraphElement
 
-  let isSubmitting = false  // 중복 제출 방지 플래그
+  let isSubmitting = false
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault()
 
-    if (isSubmitting) return  // 이미 제출 중이면 무시
+    if (isSubmitting) return
 
     isSubmitting = true
     submitBtn.disabled = true
-    submitBtn.innerHTML = '봉인 중... <span style="margin-left:10px;">⏳</span>'  // 로딩 표시
+    submitBtn.innerHTML = '봉인 중... <span style="margin-left:12px; animation: spin 1s linear infinite;">⏳</span>'
     messageEl.textContent = ''
     messageEl.style.color = '#fff'
 
@@ -59,7 +106,9 @@ export async function renderCreateCapsuleForm(container: HTMLElement) {
     if (!title || !content || !openAtStr) {
       messageEl.style.color = '#ff6b6b'
       messageEl.textContent = '모든 항목을 입력해주세요!'
-      resetButton()
+      isSubmitting = false
+      submitBtn.disabled = false
+      submitBtn.innerHTML = '상자 봉인하기'
       return
     }
 
@@ -74,7 +123,7 @@ export async function renderCreateCapsuleForm(container: HTMLElement) {
         .insert({
           user_id: currentUser.id,
           title,
-          content: encrypt(content),  // 암호화해서 저장
+          content: encrypt(content),
           open_at: openAt,
           is_opened: false
         })
@@ -82,24 +131,21 @@ export async function renderCreateCapsuleForm(container: HTMLElement) {
       if (error) throw error
 
       messageEl.style.color = '#34d399'
-      messageEl.textContent = '캡슐이 성공적으로 봉인되었습니다! 🎉'
+      messageEl.textContent = '상자가 성공적으로 봉인되었습니다! 🎉'
 
-      // 2초 후 폼 초기화 & 리스트로 돌아가기
       setTimeout(() => {
-        resetButton()
+        isSubmitting = false
+        submitBtn.disabled = false
+        submitBtn.innerHTML = '상자 봉인하기'
         loadCapsules()
-      }, 2000)
+      }, 2200)
 
     } catch (err: any) {
       messageEl.style.color = '#ff6b6b'
       messageEl.textContent = '오류: ' + (err.message || '다시 시도해주세요')
-      resetButton()
+      isSubmitting = false
+      submitBtn.disabled = false
+      submitBtn.innerHTML = '상자 봉인하기'
     }
   })
-
-  function resetButton() {
-    isSubmitting = false
-    submitBtn.disabled = false
-    submitBtn.innerHTML = '캡슐 봉인하기'
-  }
 }
