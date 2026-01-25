@@ -1,4 +1,4 @@
-// src/main.ts - FutureBox 최종 완성본 (문구 색상 구분 + 공개 캡슐 열린/닫힌 이미지 적용)
+// src/main.ts - FutureBox 최종 완성본 (텍스트 크기 최적화 버전)
 
 import { supabase } from './lib/supabase.ts'
 import { renderLoginForm } from './components/LoginForm.ts'
@@ -58,17 +58,17 @@ export async function loadCapsules(publicPage = 1) {
 
   const currentUser = getCurrentUser()
 
-  // 인트로 섹션 렌더링
+  // 인트로 섹션 렌더링 - 폰트 사이즈 살짝 축소
   if (!currentUser) {
     introSection.innerHTML = `
-      <h2>미래의 나에게 메시지를 보내세요</h2>
-      <p>FutureBox는 당신의 추억을 안전하게 봉인합니다. 지정한 날짜에만 열 수 있어요!</p>
+      <h2 style="font-size: 1.8rem;">미래의 나에게 메시지를 보내세요</h2>
+      <p style="font-size: 1rem; opacity: 0.8;">FutureBox는 당신의 추억을 안전하게 봉인합니다. 지정한 날짜에만 열 수 있어요!</p>
     `
   } else {
     introSection.innerHTML = `
-  <h2>환영합니다, ${currentUser.email?.split('@')[0] ?? '사용자'}님!</h2>
-  <p>새로운 상자를 만들거나, 기존 상자를 확인해보세요.</p>
-`
+      <h2 style="font-size: 1.8rem;">환영합니다, ${currentUser.email?.split('@')[0] ?? '사용자'}님!</h2>
+      <p style="font-size: 1rem; opacity: 0.8;">새로운 상자를 만들거나, 기존 상자를 확인해보세요.</p>
+    `
   }
 
   // 헤더 사용자 메뉴 업데이트
@@ -76,8 +76,8 @@ export async function loadCapsules(publicPage = 1) {
   if (userMenu) {
     if (currentUser) {
       userMenu.innerHTML = `
-        <span class="user-email">${currentUser.email}</span>
-        <button class="logout-btn" id="logout-btn">로그아웃</button>
+        <span class="user-email" style="font-size: 0.95rem;">${currentUser.email}</span>
+        <button class="logout-btn" id="logout-btn" style="padding: 8px 16px; font-size: 0.85rem;">로그아웃</button>
       `
       document.getElementById('logout-btn')?.addEventListener('click', () => {
         signOut()
@@ -89,7 +89,6 @@ export async function loadCapsules(publicPage = 1) {
     }
   }
 
-  // 로그인 안 됐으면 로그인 폼 표시
   if (!currentUser) {
     renderLoginForm(capsuleList)
     return
@@ -97,7 +96,7 @@ export async function loadCapsules(publicPage = 1) {
 
   let html = `
     <section class="public-section fade-in">
-      <h2 class="section-title">다른 사람들의 상자들</h2>
+      <h2 class="section-title" style="font-size: 1.6rem; margin-bottom: 24px;">다른 사람들의 상자들</h2>
       <div class="capsule-grid">
   `
 
@@ -117,24 +116,24 @@ export async function loadCapsules(publicPage = 1) {
 
       if (capsule.is_opened) {
         messageText = '이미 열렸어요!'
-        messageColor = '#34d399'  // 초록 - 완료
+        messageColor = '#34d399'
       } else if (isOpenable) {
         messageText = '지금 열 수 있어요!'
-        messageColor = '#fbbf24'  // 노랑 - 주목
+        messageColor = '#fbbf24'
       } else {
         messageText = '아직 열 수 없습니다...'
-        messageColor = '#9ca3af'  // 회색 - 대기
+        messageColor = '#9ca3af'
       }
 
       return `
         <div class="capsule-card ${statusClass} hover-scale">
-          <div class="card-content">
-            <h2 class="card-title">비밀 상자</h2>
-            <p class="card-author">by ${maskedEmail}</p>
-            <p class="card-date">
+          <div class="card-content" style="padding: 24px;">
+            <h2 class="card-title" style="font-size: 1.3rem;">비밀 상자</h2>
+            <p class="card-author" style="font-size: 0.85rem;">by ${maskedEmail}</p>
+            <p class="card-date" style="font-size: 0.85rem; opacity: 0.7;">
               ${capsule.is_opened ? '개봉됨' : '열림 예정: ' + openAtDate.toLocaleDateString('ko-KR')}
             </p>
-            <p class="card-message" style="white-space: pre-line; color: ${messageColor};">
+            <p class="card-message" style="white-space: pre-line; color: ${messageColor}; font-size: 0.95rem; min-height: auto; margin-top: 12px;">
               ${messageText}
             </p>
           </div>
@@ -145,24 +144,24 @@ export async function loadCapsules(publicPage = 1) {
 
   html += '</div>'
 
-  // 페이지네이션
+  // 페이지네이션 - 버튼 크기 축소
   if (totalPublic > ITEMS_PER_PAGE) {
     const totalPages = Math.ceil(totalPublic / ITEMS_PER_PAGE)
-    html += '<div class="pagination">'
+    html += '<div class="pagination" style="margin: 30px 0;">'
     for (let i = 1; i <= totalPages; i++) {
-      html += `<button class="${i === publicPage ? 'active' : ''}" data-page="${i}">${i}</button>`
+      html += `<button class="${i === publicPage ? 'active' : ''}" data-page="${i}" style="padding: 8px 14px; font-size: 0.85rem;">${i}</button>`
     }
     html += '</div>'
   }
 
-  html += '<div class="section-divider"></div>'
+  html += '<div class="section-divider" style="margin: 40px 0;"></div>'
 
   // 나의 상자 섹션
   html += `
     <section class="my-section fade-in">
-      <div class="my-header">
-        <h2 class="section-title">나의 상자</h2>
-        <button id="create-new-btn" class="create-btn">새 상자 만들기</button>
+      <div class="my-header" style="margin-bottom: 24px;">
+        <h2 class="section-title" style="font-size: 1.6rem; margin: 0;">나의 상자</h2>
+        <button id="create-new-btn" class="create-btn" style="padding: 10px 20px; font-size: 0.95rem;">새 상자 만들기</button>
       </div>
       <div class="capsule-grid">
   `
@@ -176,7 +175,7 @@ export async function loadCapsules(publicPage = 1) {
   if (myError) {
     html += '<p class="error-message">나의 상자를 불러오는 중 오류가 발생했습니다.</p>'
   } else if (myCapsules.length === 0) {
-    html += '<p class="empty-message">아직 만든 상자가 없어요. 새 상자를 만들어 보세요!</p>'
+    html += '<p class="empty-message" style="font-size: 1rem;">아직 만든 상자가 없어요. 새 상자를 만들어 보세요!</p>'
   } else {
     html += myCapsules.map(capsule => {
       const openAtDate = new Date(capsule.open_at)
@@ -186,11 +185,7 @@ export async function loadCapsules(publicPage = 1) {
 
       let dateText = capsule.is_opened
         ? `개봉됨: ${new Date(capsule.opened_at).toLocaleString('ko-KR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
+          year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
         })}`
         : `열림 예정: ${openAtDate.toLocaleDateString('ko-KR')}`
 
@@ -199,33 +194,33 @@ export async function loadCapsules(publicPage = 1) {
 
       if (capsule.is_opened) {
         messageText = '이 상자는 이미 열렸습니다!'
-        messageColor = '#34d399'  // 초록 - 완료
+        messageColor = '#34d399'
       } else if (isOpenable) {
         messageText = '지금 열 수 있어요!'
-        messageColor = '#fbbf24'  // 노랑 - 주목
+        messageColor = '#fbbf24'
       } else {
-        messageText = '아직 열 수 없습니다...\n조금만 더 기다려주세요.'
-        messageColor = '#9ca3af'  // 회색 - 대기
+        messageText = '아직 열 수 없습니다...'
+        messageColor = '#9ca3af'
       }
 
-      // 열기 버튼: 개봉 가능하거나 이미 개봉된 경우에만 표시
       const openBtn = (capsule.is_opened || isOpenable)
-        ? `<button class="open-btn" data-id="${capsule.id}">열기</button>`
+        ? `<button class="open-btn" data-id="${capsule.id}" style="padding: 10px 20px; font-size: 0.9rem;">열기</button>`
         : ''
 
-      // 삭제 버튼: 항상 표시 (열린 상자도 삭제 가능)
-      const deleteBtn = `<button class="delete-btn" data-id="${capsule.id}">삭제</button>`
+      const deleteBtn = `<button class="delete-btn" data-id="${capsule.id}" style="padding: 10px 20px; font-size: 0.9rem; margin-left: 8px;">삭제</button>`
 
       return `
         <div class="capsule-card ${statusClass} hover-scale" data-id="${capsule.id}">
-          <div class="card-content">
-            <h2 class="card-title">${capsule.title || '(제목 없음)'}</h2>
-            <p class="card-date">${dateText}</p>
-            <p class="card-message" style="white-space: pre-line; color: ${messageColor};">
+          <div class="card-content" style="padding: 24px;">
+            <h2 class="card-title" style="font-size: 1.3rem; margin-bottom: 8px;">${capsule.title || '(제목 없음)'}</h2>
+            <p class="card-date" style="font-size: 0.85rem; opacity: 0.7;">${dateText}</p>
+            <p class="card-message" style="white-space: pre-line; color: ${messageColor}; font-size: 0.95rem; margin: 12px 0; min-height: auto;">
               ${messageText}
             </p>
-            ${openBtn}
-            ${deleteBtn}
+            <div style="margin-top: 16px;">
+              ${openBtn}
+              ${deleteBtn}
+            </div>
           </div>
         </div>
       `
@@ -236,7 +231,6 @@ export async function loadCapsules(publicPage = 1) {
 
   capsuleList.innerHTML = html
 
-  // 애니메이션 적용
   setTimeout(() => {
     const sections = document.querySelectorAll('.fade-in')
     sections.forEach(s => s.classList.add('visible'))
@@ -256,7 +250,7 @@ export async function loadCapsules(publicPage = 1) {
     })
   })
 
-  // 열기 버튼 이벤트 - 열린 상자도 재개봉 가능
+  // 열기 버튼 이벤트
   document.querySelectorAll('.open-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const target = e.currentTarget as HTMLButtonElement
@@ -288,19 +282,15 @@ export async function loadCapsules(publicPage = 1) {
         const modal = document.createElement('div')
         modal.className = 'modal fade-in'
         modal.innerHTML = `
-          <div class="modal-content">
-            <button id="close-modal" class="close-btn">×</button>
-            <h2>${capsule.title || '(제목 없음)'}</h2>
-            <div class="modal-message" style="white-space: pre-line;">${decryptedContent}</div>
-            <p class="modal-time">
+          <div class="modal-content" style="padding: 30px;">
+            <button id="close-modal" class="close-btn" style="font-size: 1.8rem; top: 15px; right: 20px;">×</button>
+            <h2 style="font-size: 1.5rem; margin-bottom: 20px;">${capsule.title || '(제목 없음)'}</h2>
+            <div class="modal-message" style="white-space: pre-line; font-size: 1rem; line-height: 1.6;">${decryptedContent}</div>
+            <p class="modal-time" style="font-size: 0.85rem; margin-top: 24px; opacity: 0.7;">
               봉인일: ${new Date(capsule.created_at).toLocaleDateString('ko-KR')} • 
               개봉 시각: ${capsule.is_opened
             ? new Date(capsule.opened_at).toLocaleString('ko-KR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
+              year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
             })
             : '아직 개봉되지 않음'}
             </p>
@@ -326,7 +316,7 @@ export async function loadCapsules(publicPage = 1) {
     })
   })
 
-  // 삭제 버튼 이벤트 - 항상 삭제 가능
+  // 삭제 버튼 이벤트
   document.querySelectorAll('.delete-btn').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const target = e.currentTarget as HTMLButtonElement
@@ -337,12 +327,12 @@ export async function loadCapsules(publicPage = 1) {
       const confirmModal = document.createElement('div')
       confirmModal.className = 'modal fade-in'
       confirmModal.innerHTML = `
-        <div class="modal-content confirm-modal">
-          <h2 style="color: #ef4444;">정말 삭제하시겠어요?</h2>
-          <p style="color: #d1d5db; margin: 24px 0;">삭제된 상자는 복구할 수 없습니다.</p>
-          <div style="display: flex; gap: 24px; justify-content: center;">
-            <button id="cancel-delete" class="btn-secondary">취소</button>
-            <button id="confirm-delete" class="btn-danger">삭제</button>
+        <div class="modal-content confirm-modal" style="max-width: 360px; padding: 30px;">
+          <h2 style="color: #ef4444; font-size: 1.4rem;">정말 삭제하시겠어요?</h2>
+          <p style="color: #666; margin: 16px 0; font-size: 0.95rem;">삭제된 상자는 복구할 수 없습니다.</p>
+          <div style="display: flex; gap: 16px; justify-content: center;">
+            <button id="cancel-delete" class="btn-secondary" style="padding: 10px 24px; font-size: 0.9rem;">취소</button>
+            <button id="confirm-delete" class="btn-danger" style="padding: 10px 24px; font-size: 0.9rem;">삭제</button>
           </div>
         </div>
       `

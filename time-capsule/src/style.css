@@ -1,4 +1,4 @@
-/* src/style.css - FutureBox 테마 최종 완성본 (공개 캡슐도 열린 상자 이미지 적용 + 3D 네온 + 테두리 제거) */
+/* src/style.css - FutureBox 테마 최종 완성본 (헤더 쏠림 방지 및 모바일 최적화 통합) */
 
 /* 기본 리셋 */
 * {
@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
@@ -19,9 +19,13 @@ body {
   color: #fff;
   min-height: 100vh;
   line-height: 1.6;
+  word-break: keep-all;
+  /* 한글 줄바꿈 최적화 */
 }
 
-/* 헤더 - 밑줄 완전 제거 */
+/* ============================================================
+   헤더 섹션 - 쏠림 및 잘림 방지 수정
+   ============================================================ */
 .header {
   background: rgba(30, 30, 50, 0.92);
   backdrop-filter: blur(16px);
@@ -30,143 +34,154 @@ body {
   left: 0;
   width: 100%;
   z-index: 900;
-  padding: 18px 0;
+  padding: 12px 0;
+  /* 높이 약간 축소 */
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
 }
 
 .header .container {
   display: flex;
   justify-content: space-between;
+  /* 로고와 메뉴를 양 끝으로 배치 */
   align-items: center;
-  max-width: 1400px;
+  max-width: 1200px;
+  /* 메인 폭과 일치시켜 안정감 확보 */
   margin: 0 auto;
-  padding: 0 30px;
+  padding: 0 20px;
+  gap: 15px;
+  /* 최소 간격 설정 */
+}
+
+.logo-link {
+  flex-shrink: 0;
+  /* 로고가 밀리지 않게 고정 */
 }
 
 .header h1 {
-  font-size: 2.6rem;
+  font-size: 1.8rem;
+  /* 2.6rem에서 축소하여 공간 확보 */
   font-weight: 900;
-  letter-spacing: -2px;
+  letter-spacing: -1.5px;
   color: #fff;
   margin: 0;
   text-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* 사용자 메뉴 */
+/* 사용자 메뉴 레이아웃 */
 .user-menu {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 16px;
+  flex-shrink: 1;
+  /* 공간 부족 시 메뉴가 유연하게 반응 */
+  overflow: hidden;
 }
 
 .user-email {
   color: #e0e0ff;
-  font-size: 1.15rem;
+  font-size: 0.95rem;
+  /* 가독성 좋은 크기로 조정 */
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 이메일이 너무 길면 끝부분 생략 */
+  max-width: 180px;
+  /* 이메일 최대 폭 제한으로 버튼 공간 확보 */
 }
 
 .logout-btn {
   background: #ff5252;
   color: white;
   border: none;
-  padding: 10px 28px;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 600;
+  padding: 8px 18px;
+  /* 버튼 크기 최적화 */
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 82, 82, 0.2);
+  white-space: nowrap;
 }
 
 .logout-btn:hover {
   background: #ff1744;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(255, 82, 82, 0.5);
+  transform: translateY(-1px);
 }
 
 /* 메인 콘텐츠 여백 */
 main.container {
-  padding-top: 140px;
-  max-width: 1400px;
+  padding-top: 100px;
+  /* 헤더 높이에 맞게 조정 */
+  max-width: 1200px;
   margin: 0 auto;
-  padding-left: 30px;
-  padding-right: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
-/* 인트로 섹션 - 가운데 정렬 & 세련되게 */
+/* 인트로 섹션 */
 .intro {
   text-align: center;
-  margin: 0 auto 48px auto;
+  margin: 0 auto 32px auto;
   max-width: 800px;
-  padding: 32px 40px;
-  border-radius: 24px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  padding: 24px;
 }
 
 .intro h2 {
-  font-size: 2.4rem;
+  font-size: 1.8rem;
+  /* 컴팩트하게 축소 */
   font-weight: 900;
   background: linear-gradient(90deg, #a78bfa, #7c3aed, #60a5fa);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 16px;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  margin-bottom: 12px;
 }
 
 .intro p {
-  font-size: 1.15rem;
-  opacity: 0.95;
-  line-height: 1.6;
-  font-weight: 500;
+  font-size: 1rem;
+  opacity: 0.85;
 }
 
 /* 섹션 제목 */
 .section-title {
-  font-size: 2.4rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: white;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
   text-align: center;
-  text-shadow: 0 3px 15px rgba(0,0,0,0.6);
 }
 
 /* 구분선 */
 .section-divider {
-  height: 3px;
-  background: linear-gradient(to right, transparent, rgba(100, 181, 246, 0.5), transparent);
-  margin: 80px 0 60px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(140, 120, 255, 0.3), transparent);
+  margin: 40px 0;
 }
 
 /* 캡슐 그리드 */
 .capsule-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
 }
 
-/* 캡슐 카드 기본 - 3D 네온 효과 + 테두리 제거 */
+/* 캡슐 카드 */
 .capsule-card {
-  border-radius: 24px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 
-    0 12px 48px rgba(0, 0, 0, 0.35), 
-    inset 0 -6px 24px rgba(255, 255, 255, 0.08),
-    0 0 30px rgba(79, 70, 229, 0.25); /* 네온 glow */
-  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
   transition: all 0.4s ease;
   position: relative;
-  border: none; /* 테두리 완전 제거 */
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .capsule-card:hover {
-  transform: translateY(-16px) scale(1.03);
-  box-shadow: 
-    0 30px 80px rgba(0, 0, 0, 0.5),
-    inset 0 -8px 32px rgba(255, 255, 255, 0.12),
-    0 0 50px rgba(79, 70, 229, 0.45); /* 호버 시 네온 더 강하게 */
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
-/* 상자 배경 공통 오버레이 */
 .capsule-card::before {
   content: "";
   position: absolute;
@@ -174,81 +189,59 @@ main.container {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(20, 20, 45, 0.65);
+  background: rgba(20, 20, 45, 0.75);
   z-index: 1;
   pointer-events: none;
 }
 
-/* 카드 내용 */
 .card-content {
   position: relative;
   z-index: 2;
-  padding: 36px;
+  padding: 24px;
 }
 
-/* 공개 캡슐 - 열린/닫힌 상자 이미지 구분 */
+/* 카드 배경 설정 */
 .public-section .capsule-card {
-  background: url('/treasure-chest-pixel.png') no-repeat center center / cover !important;
+  background: url('/treasure-chest-pixel.png') no-repeat center/cover !important;
 }
 
 .public-section .capsule-card.unlocked {
-  background: url('/openbox.jpg') no-repeat center center / cover !important;
+  background: url('/openbox.jpg') no-repeat center/cover !important;
 }
 
-/* 나의 캡슐 - 잠긴/열린 상자 */
 .my-section .capsule-card.locked {
-  background: url('/treasure-chest-pixel.png') no-repeat center center / cover !important;
+  background: url('/treasure-chest-pixel.png') no-repeat center/cover !important;
 }
 
 .my-section .capsule-card.unlocked {
-  background: url('/openbox.jpg') no-repeat center center / cover !important;
+  background: url('/openbox.jpg') no-repeat center/cover !important;
 }
 
-/* 카드 타이틀 공통 */
 .card-title {
-  font-size: 1.9rem;
+  font-size: 1.3rem;
   font-weight: 800;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-}
-
-.public-section .card-title {
-  color: #e0e0ff;
-}
-
-.public-section .card-author {
-  font-size: 1rem;
-  opacity: 0.85;
-  margin-bottom: 16px;
-  color: #b0b0ff;
-}
-
-/* 카드 공통 요소 */
-.card-date {
-  font-size: 1.05rem;
-  opacity: 0.85;
-  margin-bottom: 20px;
 }
 
 .card-message {
-  font-size: 1.2rem;
-  line-height: 1.8;
+  font-size: 0.95rem;
+  line-height: 1.6;
   white-space: pre-wrap;
-  margin-bottom: 28px;
-  min-height: 80px;
+  margin-bottom: 20px;
+  min-height: auto;
 }
 
-/* 버튼들 */
-.open-btn, .delete-btn {
-  padding: 14px 32px;
+/* 버튼 스타일 */
+.open-btn,
+.delete-btn {
+  padding: 10px 20px;
   border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 16px;
+  transition: all 0.2s;
 }
 
 .open-btn {
@@ -256,278 +249,130 @@ main.container {
   color: white;
 }
 
-.open-btn:hover {
-  background: #4338ca;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
-}
-
 .delete-btn {
-  background: #ef5350;
-  color: white;
-  margin-left: 12px;
+  background: rgba(239, 83, 80, 0.2);
+  color: #ff8a80;
+  border: 1px solid rgba(239, 83, 80, 0.3);
+  margin-left: 8px;
 }
 
-.delete-btn:hover {
-  background: #e53935;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(239, 83, 80, 0.4);
-}
-
-/* 새 캡슐 만들기 버튼 */
 .create-btn {
-  background: linear-gradient(135deg, #6b48ff, #4f46e5);
+  background: linear-gradient(135deg, #7c3aed, #60a5fa);
   color: white;
   border: none;
-  padding: 14px 32px;
-  border-radius: 16px;
-  font-size: 1.15rem;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
-}
-
-.create-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 12px 30px rgba(79, 70, 229, 0.6);
 }
 
 /* 페이지네이션 */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 14px;
-  margin: 50px 0 80px;
+  gap: 10px;
+  margin: 30px 0 60px;
 }
 
 .pagination button {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.1);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 12px;
+  padding: 8px 14px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s;
-  font-weight: 600;
-}
-
-.pagination button:hover {
-  background: rgba(255,255,255,0.3);
-  transform: translateY(-2px);
 }
 
 .pagination button.active {
-  background: #4f46e5;
-  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.5);
+  background: #7c3aed;
 }
 
-/* 기타 */
-.empty-message,
-.error-message {
-  grid-column: 1 / -1;
-  text-align: center;
-  font-size: 1.4rem;
-  padding: 80px 0;
-  color: #bbb;
-  opacity: 0.9;
-}
-
-.my-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-/* 반응형 */
-@media (max-width: 1024px) {
-  .capsule-grid {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  }
-}
-
-@media (max-width: 768px) {
-  .header h1 {
-    font-size: 2.1rem;
-  }
-
-  .section-title {
-    font-size: 2rem;
-  }
-
-  .my-header {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .create-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .capsule-grid {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
-}
-
-/* 개봉 시각 강조 */
-.card-date {
-  font-weight: 600;
-}
-
-.card-date:has(개봉됨) {
-  color: #4caf50 !important;
-}
-
-/* 모달 내 개봉 시각 */
-.modal-opened-time {
-  font-weight: 700;
-  color: #4caf50;
-  font-size: 1.05rem;
-  margin-top: 8px;
-}
-
-/* 애니메이션 */
-.fade-in {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.fade-in.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.fade-out {
-  opacity: 0;
-  transform: translateY(-20px);
-}
-
-/* 모달 기본 스타일 */
+/* 모달 스타일 */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.modal.fade-in {
-  opacity: 1;
+  z-index: 2000;
+  padding: 20px;
 }
 
 .modal-content {
-  background: linear-gradient(135deg, #ffffff, #f3f4f6);
-  border-radius: 24px;
-  padding: 48px 40px;
-  max-width: 700px;
-  width: 90%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 30px 100px rgba(0,0,0,0.5);
+  background: #1e1e32;
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 500px;
+  width: 100%;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
-  animation: modalPop 0.5s ease-out;
 }
 
-@keyframes modalPop {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+/* ============================================================
+   통합 모바일 최적화 (768px 이하)
+   ============================================================ */
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 1.3rem;
+  }
+
+  /* 모바일에서 이메일 숨김 (공간 확보 핵심) */
+  .user-email {
+    display: none;
+  }
+
+  .header .container {
+    padding: 0 15px;
+  }
+
+  main.container {
+    padding-top: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .intro h2 {
+    font-size: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .capsule-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .my-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .create-btn,
+  .open-btn,
+  .delete-btn {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
-.close-btn {
-  position: absolute;
-  top: 20px;
-  right: 24px;
-  background: none;
-  border: none;
-  font-size: 2.5rem;
-  cursor: pointer;
-  color: #4b5563;
-  transition: color 0.3s;
+/* 애니메이션 */
+.fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.5s ease;
 }
 
-.close-btn:hover {
-  color: #ef4444;
-}
-
-.modal-message {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  color: #1f2937;
-  white-space: pre-line;
-  margin: 24px 0;
-}
-
-.modal-time {
-  text-align: center;
-  color: #6b7280;
-  font-size: 1rem;
-  margin-top: 32px;
-}
-
-/* 삭제 모달 */
-.confirm-modal {
-  max-width: 420px;
-  text-align: center;
-}
-
-.confirm-modal h2 {
-  color: #ef4444;
-  margin-bottom: 20px;
-}
-
-.btn-secondary, .btn-danger {
-  padding: 12px 32px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-secondary {
-  background: #9ca3af;
-  color: white;
-}
-
-.btn-secondary:hover {
-  background: #6b7280;
-}
-
-.btn-danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn-danger:hover {
-  background: #dc2626;
-  transform: translateY(-2px);
-}
-
-/* 카드 호버 효과 - 네온 강화 */
-.hover-scale {
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.hover-scale:hover {
-  transform: translateY(-12px) scale(1.03);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 40px rgba(79,70,229,0.5);
-}
-
-section.my-section {
-  padding-bottom: 30px;
-  margin-bottom: 50px;
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
