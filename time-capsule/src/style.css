@@ -315,7 +315,7 @@ main.container {
 }
 
 /* ============================================================
-   통합 모바일 최적화 (768px 이하)
+   통합 모바일 최적화 (768px 이하) - 버튼 가로 배치 수정본
    ============================================================ */
 @media (max-width: 768px) {
   .header h1 {
@@ -350,22 +350,62 @@ main.container {
     gap: 16px;
   }
 
+  /* 나의 상자 헤더: 제목과 만들기 버튼을 가로로 유지 */
   .my-header {
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
   }
 
-  .create-btn,
+  .create-btn {
+    width: auto;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  /* 캡슐 카드 내부 버튼 레이아웃 수정 */
+  .card-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* 버튼들을 감싸는 컨테이너 (main.ts에서 버튼들이 들어가는 div) */
+  .card-content div {
+    display: flex;
+    gap: 8px;
+    /* 버튼 사이 간격 */
+    margin-top: 12px;
+  }
+
   .open-btn,
   .delete-btn {
-    width: 100%;
+    width: auto;
+    /* 100% 해제 */
+    flex: 1;
+    /* 가로 공간을 비례하게 나눠 가짐 */
     margin-left: 0;
+    /* 기존 마진 제거 */
+    margin-top: 0;
+    /* 세로 겹침 방지 */
+    padding: 12px 5px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    /* 터치하기 적당한 높이 */
+  }
+
+  /* 삭제 버튼만 혼자 있을 때 (아직 열 수 없는 상자) 너무 길어지지 않게 조정 */
+  .delete-btn:only-child {
+    flex: 0 1 auto;
+    min-width: 100px;
+    padding: 12px 20px;
   }
 }
 
-/* 애니메이션 */
+/* 애니메이션 (기존 유지) */
 .fade-in {
   opacity: 0;
   transform: translateY(10px);
